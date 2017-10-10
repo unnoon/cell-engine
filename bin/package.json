@@ -1,7 +1,7 @@
 {
   "name": "cell-engine",
   "description": "Data-driven ECS Game/Application engine.",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/unnoon/cell-engine",
   "author": {
     "name": "Rogier Geertzema",
@@ -34,7 +34,7 @@
     "release": "npm version",
     "prepush": "npm test",
     "preversion": "npm test",
-    "version": "npm run build && inch-ci:test && git add -A bin/",
+    "version": "npm run build && npm run inch-ci:test && git add -A bin/",
     "postversion": "git push && git push --tags && npm publish bin/",
     "test": "karma start --single-run",
     "update": "ncu -u -a && npm install"
