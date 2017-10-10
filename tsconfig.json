@@ -1,0 +1,15 @@
+{
+    "compilerOptions":
+    {
+        "noEmit": true,
+        "target": "es6",
+        "lib": ["es6", "dom", "es2017.object"],
+        "types": ["reflect-metadata"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "jsx": "react"
+    },
+    "exclude": ["bin/", "node_modules/", "tmp/"]
+}

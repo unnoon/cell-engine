@@ -1,0 +1,23 @@
+dist: trusty
+sudo: false
+language: node_js
+node_js:
+    - "6.10.2"
+
+branches:
+    only:
+        - master
+        - dev
+
+cache:
+    directories:
+        - node_modules
+
+addons:
+  chrome: stable
+
+install:
+    - npm install
+
+script:
+    - npm test | ./node_modules/coveralls/bin/coveralls.js

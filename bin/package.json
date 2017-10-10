@@ -1,0 +1,83 @@
+{
+  "name": "cell-engine",
+  "description": "Data-driven ECS Game/Application engine.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/unnoon/cell-engine",
+  "author": {
+    "name": "Rogier Geertzema",
+    "email": "r.geertzema@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/unnoon/cell-engine"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ECS",
+    "Entity",
+    "Component",
+    "System",
+    "cell",
+    "game",
+    "engine"
+  ],
+  "scripts": {
+    "build:clean": "rimraf -rf bin/ && rimraf -rf tmp/",
+    "build:docs": "rimraf -rf bin/docs && npm run docs && ncp doc/ bin/docs/",
+    "build:es6": "tsc --outDir tmp/ -p tsconfig.json --declaration --sourceMap --module ES6 --noEmit false && ncp tmp/src/ bin/",
+    "build:files": "ncp package.json bin/package.json && ncp README.md bin/README.md",
+    "build:ts": "ncp src/ bin/.ts/",
+    "build": "npm run build:clean && npm run build:es6 && npm run build:ts && npm run build:docs && npm run build:files",
+    "docs": "rimraf -rf doc && typedoc --options .typedoc.json --out doc/ src/",
+    "dts": "dts-generator --name bottom_line --project ./ --out index.d.ts",
+    "inch-ci:test": "jsdoc bin/ -r -d tmp/jsdoc/",
+    "release": "npm version",
+    "prepush": "npm test",
+    "preversion": "npm test",
+    "version": "npm run build && inch-ci:test && git add -A bin/",
+    "postversion": "git push && git push --tags && npm publish bin/",
+    "test": "karma start --single-run",
+    "update": "ncu -u -a && npm install"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.77",
+    "@types/pixi.js": "^4.5.6",
+    "@types/react": "^16.0.10",
+    "@types/reflect-metadata": "^0.0.5",
+    "bottom_line": "^0.9.0",
+    "cell-bitset": "^0.3.5",
+    "core-js": "^2.5.1",
+    "inversify": "^4.3.0",
+    "lodash": "^4.17.4",
+    "lodash-decorators": "^4.4.1",
+    "pixi.js": "^4.5.6",
+    "react": "^16.0.0",
+    "reflect-metadata": "^0.1.10"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.43",
+    "@types/sinon": "^2.3.5",
+    "awesome-typescript-loader": "^3.2.3",
+    "babel-polyfill": "^6.26.0",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "husky": "^0.14.3",
+    "karma": "^1.7.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-mocha": "^1.3.0",
+    "karma-sinon": "^1.0.5",
+    "karma-typescript": "^3.0.7",
+    "karma-typescript-es6-transform": "^1.0.2",
+    "metascript": "^1.0.0",
+    "mocha": "^4.0.1",
+    "rimraf": "^2.6.2",
+    "sinon": "^4.0.1",
+    "tslint": "^5.7.0",
+    "tslint-eslint-rules": "^4.1.1",
+    "typescript": "^2.5.3",
+    "webpack": "^3.6.0"
+  }
+}

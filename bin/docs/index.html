@@ -1,0 +1,290 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>cell-engine</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">cell-engine</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> cell-engine</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<p><img src="https://github.com/unnoon/cell-engine/raw/master/rsc/img/CELL-ENGINE.png" width="250" height="267" /></p>
+				<p><a href="https://travis-ci.org/unnoon/cell-engine?branch=dev"><img src="https://travis-ci.org/unnoon/cell-engine.svg?branch=dev" alt="Build Status"></a>
+					<a href="http://inch-ci.org/github/unnoon/cell-engine?branch=dev"><img src="http://inch-ci.org/github/unnoon/cell-engine.svg?branch=dev" alt="Inline docs"></a>
+				<a href="http://opensource.org/licenses/MIT"><img src="http://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT license"></a></p>
+				<p>Data-driven ECS (Entity Component System) game/application engine.</p>
+				<h2 id="note">NOTE</h2>
+				<p>Very alpha. Although basic functionality is there, it&#39;s currently lacking lots of features (such as a good event system :). </p>
+				<h2 id="installation">Installation</h2>
+				<p><a href="https://www.npmjs.com">npm</a></p>
+				<p><code>npm install cell-engine</code></p>
+				<h2 id="demo">Demo</h2>
+				<p><img src="https://github.com/unnoon/cell-demos/raw/master/demos/clockclock/rsc/img/clockclock.jpg" width="500" height="252" /></p>
+				<p>Check out the <a href="https://github.com/unnoon/cell-demos">clockclock</a> demo for a working example.</p>
+				<h2 id="cell-system-entity-component-system">Cell System === Entity Component System</h2>
+				<p>In frontend development the term &#39;component&#39; is usually associated with a partial reusable piece of view (&#39;prefabs&#39; speaking in Unity terms).
+					Since react is used to create such pieces I decided to maintain the term &#39;component&#39; for &#39;prefabs&#39; and use the term &#39;cell&#39; for &#39;component&#39;.
+				Entities are solely represented by an id.</p>
+				<h3 id="-entity-id"><del>Entity</del> id</h3>
+				<p>Well okay technically entities are still there but solely represented by an id, nothing more than a bag of cells (pieces of data) that store their own entity id.
+				Adding or removing features/traits or changing an &#39;entity&#39; completely becomes as easy as adding or removing cells.  </p>
+				<h3 id="cells-data-model-component-in-ecs-json">Cells (data/model, Component in ECS) .json</h3>
+				<p>Cells are pure data! Represented by flat json files. Each cell stores the entity id (eid) that it is part of.
+				This should make serialization of the whole application as simple as saving all cells to json (future work). </p>
+				<pre><code class="lang-json">// transform.json
+{
+  &quot;eid&quot;: -1,
+  &quot;x&quot;: 0,
+  &quot;y&quot;: 0,
+  &quot;rotation&quot;: 0,
+  &quot;scaleX&quot;: 1.0,
+  &quot;scaleY&quot;: 1.0
+}
+</code></pre>
+				<h3 id="systems-behaviour-logic-controller-ts">Systems (behaviour/logic/controller) .ts</h3>
+				<p>Systems provide the behaviour that is exhibited by the entities. Systems are designed to act on entities with a certain combination of cells (which is efficiently determined by matching bitmasks).
+					Trigger or untrigger a system for a specific entity is easily achieved by added or removing the appropriate cells.
+				Note that the order in which systems are executed is important to make sure changed data is caught on by the next system.</p>
+				<pre><code class="lang-js"><span class="hljs-keyword">import</span> System <span class="hljs-keyword">from</span> <span class="hljs-string">'./System'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Renderer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">System</span>
+</span>{
+    <span class="hljs-comment">/**
+     * The cell combination to act on.
+     */</span>
+    public <span class="hljs-keyword">static</span> cells = [<span class="hljs-string">'transform'</span>];
+
+    <span class="hljs-comment">/**
+     * Is ran each tick for every entity that matches the cell mask
+     * 
+     * @param transform - Transform cell. Each update call the next matching entity transform is injected.
+     */</span>
+    public update(transform)
+    {
+        <span class="hljs-keyword">const</span> view = <span class="hljs-keyword">this</span>.store.views[<span class="hljs-keyword">this</span>.eid]; <span class="hljs-comment">// NOTE views are normally not accessed from systems!!</span>
+
+        view.x        = transform.x;
+        view.y        = transform.y;
+        view.rotation = transform.rotation;
+        view.scale.x  = transform.scaleX;
+        view.scale.y  = transform.scaleY;
+
+        <span class="hljs-keyword">const</span> sprite = <span class="hljs-keyword">this</span>.getCell(<span class="hljs-string">'sprite'</span>);
+
+        <span class="hljs-keyword">if</span>(!sprite) {<span class="hljs-keyword">return</span>}
+
+        view.anchor.x = sprite.anchorX;
+        view.anchor.y = sprite.anchorY;
+    }
+}
+</code></pre>
+				<h3 id="components-prefabs-tsx">Components (Prefabs) .tsx</h3>
+				<p>Components represent parts of reusable views and their cell data settings. Cells are represented as &#39;c-&#39; prefixed attributes. The element itself is interpreted as a &#39;node&#39; cell.
+				React is solely used to create such components, because it allows a readable way to define structure as well as some validation on cells. </p>
+				<pre><code class="lang-js"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>
+&lt;clock c-clock={{}} c-sprite={{<span class="hljs-attr">texture</span>: <span class="hljs-string">'img_clock'</span>}}&gt;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">dial</span> <span class="hljs-attr">name</span>=<span class="hljs-string">'dial1'</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dial</span> <span class="hljs-attr">name</span>=<span class="hljs-string">'dial2'</span> <span class="hljs-attr">c-transform</span>=<span class="hljs-string">{{rotation:</span> <span class="hljs-attr">Math.PI</span>/<span class="hljs-attr">2</span>}}/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">clock</span>&gt;</span>;</span>
+</code></pre>
+				<h3 id="views">Views</h3>
+				<p>Ultimately cell-engine should be renderer independent. View nodes are kept separate in a special array in the store.
+				The render system (only) should translate the application data to the views. </p>
+				<h2 id="cache-friendly-store">Cache friendly Store</h2>
+				<p>Because the whole application is represented by a collection of json&#39;s the complete application can be represented by a 2 dimensional array: cell x eid.
+					Systems can iterate effeciently over all entities and triggered appropriately by using bitmasks that represent the combination of cells.
+				Because systems are executed in a specific order this provides a predictable way in which cells are looked up and should reduce the number of cache misses.  </p>
+				<h2 id="future-work">Future work</h2>
+				<ul>
+					<li>Proper event system</li>
+					<li>Unit tests</li>
+					<li>Input handling using streams (RxJS)</li>
+					<li>Proper tween cell</li>
+					<li>Renderer independence</li>
+					<li>Physics</li>
+					<li>Particle system</li>
+					<li>Serialization/saving loading</li>
+					<li>Dependency injection (for engine code)</li>
+					<li>View porting</li>
+					<li>Optimum store initialization based on system order</li>
+					<li>cell-skeleton project generator</li>
+					<li>etc. etc.</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_application_.html">"core/<wbr>Application"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_cellmanager_.html">"core/<wbr>Cell<wbr>Manager"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_eventqueue_.html">"core/<wbr>Event<wbr>Queue"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_sceneloader_.html">"core/<wbr>Scene<wbr>Loader"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_stage_.html">"core/<wbr>Stage"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_store_.html">"core/<wbr>Store"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_systemmanager_.html">"core/<wbr>System<wbr>Manager"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_core_systemrunner_.html">"core/<wbr>System<wbr>Runner"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_main_.html">"main"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_requisites_.html">"requisites"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_systems_renderer_.html">"systems/<wbr>Renderer"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_systems_system_.html">"systems/<wbr>System"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
