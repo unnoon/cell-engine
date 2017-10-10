@@ -34,7 +34,7 @@
     "release": "npm version",
     "prepush": "npm test",
     "preversion": "npm test",
-    "version": "npm run build && inch-ci:test && git add -A bin/",
+    "version": "npm run build && npm run inch-ci:test && git add -A bin/",
     "postversion": "git push && git push --tags && npm publish bin/",
     "test": "karma start --single-run",
     "update": "ncu -u -a && npm install"
