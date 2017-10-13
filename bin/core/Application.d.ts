@@ -11,11 +11,17 @@ export default class Application extends PIXI.Application {
     /**
      * Creates a new instance of Application.
      *
-     * @param width   - Width of the stage.
-     * @param height  - Height of the stage.
-     * @param options - Optional options such as backgroundColor.
+     * @param options - Optional options such as width, height, backgroundColor, parent.
      *
      * @returns new Application
      */
-    constructor(width: number, height: number, options?: object);
+    constructor(options?: any);
+    /**
+     * Attaches the view to the HTMLElement matching the #id provided or the document.body otherwise.
+     *
+     * @param parent - A HTML element id.
+     *
+     * @returns this for chaining.
+     */
+    add2Parent(parent?: string): this;
 }

@@ -1,7 +1,7 @@
 {
   "name": "cell-engine",
   "description": "Data-driven ECS Game/Application engine.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/unnoon/cell-engine",
   "author": {
     "name": "Rogier Geertzema",
