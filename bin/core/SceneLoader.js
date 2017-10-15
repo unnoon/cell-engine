@@ -181,7 +181,7 @@ export default class SceneLoader {
             sceneNode.interactive = true;
             sceneNode.buttonMode = true;
             if (on.click) {
-                sceneNode.on('click', () => this.events.push({ event: on.click, sender: on.eid }));
+                sceneNode.on('pointerdown', () => this.events.push({ event: on.click, sender: on.eid }));
             }
         }
         let children;
