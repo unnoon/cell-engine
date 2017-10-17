@@ -20,7 +20,7 @@ Very alpha. Although basic functionality is there, it's currently lacking lots o
 
 <img src="https://github.com/unnoon/cell-demos/raw/master/demos/clockclock/rsc/img/clockclock.jpg" width="500" height="252" />
 
-Check out the [clockclock](http://grogger.io/portfolio/clockclock/) demo for a working example.
+Check out the [clockclock](http://grogger.io/portfolio/clockclock/) demo for a working example. Code can be found [here](github.com/unnoon/cell-demos).
 
 ## Cell System === Entity Component System
 
