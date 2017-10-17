@@ -18,7 +18,7 @@ Very alpha. Although basic functionality is there, it's currently lacking lots o
 
 ## Demo
 
-<img src="https://github.com/unnoon/cell-demos/raw/master/demos/clockclock/rsc/img/clockclock.jpg" width="500" height="252" />
+[<img src="https://github.com/unnoon/cell-demos/raw/master/demos/clockclock/rsc/img/clockclock.jpg" width="500" height="252" />](http://grogger.io/portfolio/clockclock/)
 
 Check out the [clockclock](http://grogger.io/portfolio/clockclock/) demo for a working example. Code can be found [here](https://github.com/unnoon/cell-demos).
 
